@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "start": "nodemon --exec ts-node src/app.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.11",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
