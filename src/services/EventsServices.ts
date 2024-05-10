@@ -6,16 +6,33 @@ enum TRANSACTION {
     TRANSFER = "transfer"
 }
 
-interface EventProps { "type": TRANSACTION, "destination": string, "amount": number }
+export interface EventProps {
+    type: TRANSACTION,
+    origin?: string,
+    destination?: string,
+    amount: number
+}
 
-class EventsServices {
-    public accounts: AccountProps[];
+export class EventsServices {
+    accounts: AccountProps[];
+
+    constructor(accounts: AccountProps[]) {
+        this.accounts = accounts
+    }
+
+    Reset() {
+        this.accounts = [];
+        console.log("Accouts now is a empty array.");
+    }
 
     Deposit(id: string, amount: number) {
         const destinationAccount = this.accounts.find(account => account.id == id)
         if (!!destinationAccount) {
             const finalValue = destinationAccount.balance += amount;
-            return { id: destinationAccount.balance, balance: destinationAccount.balance };
+            return { id: destinationAccount.id, balance: destinationAccount.balance };
+        } else {
+            this.accounts.push({ id: id, balance: amount })
+            return { "id": id, "balance": amount }
         }
     }
 
@@ -27,8 +44,11 @@ class EventsServices {
         }
     }
 
-    Transfer(OriginAccount: string, DestinationAccount: string, amount: number) {
+    Transfer(OriginAccount: AccountProps, DestinationAccount: AccountProps, amount: number) {
+        OriginAccount.balance -= amount;
+        DestinationAccount.balance += amount;
 
+        console.log(OriginAccount, DestinationAccount)
 
         //todo: return a array with two objects: the OriginAccount and the DestinationAccount.
     }

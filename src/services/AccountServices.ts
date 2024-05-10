@@ -7,12 +7,8 @@
 
 export interface AccountProps { "id": string, "balance": number }
 
-class AcountsServices {
+export class AccountsServices {
     public accounts: AccountProps[] = [];
-
-    reset() {
-        this.accounts = [];
-    }
 
     getAccountById(account_id: string) {
         let result = this.accounts.filter(el => el.id == account_id)
@@ -23,8 +19,8 @@ class AcountsServices {
         }
     }
 
-    create(account_id: string) {
-        this.accounts.push({ id: account_id, balance: 0 })
+    create(account_id: string, amount: number = 0) {
+        this.accounts.push({ id: account_id, balance: amount })
     }
 
     update(update: AccountProps) {
