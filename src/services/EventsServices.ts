@@ -1,3 +1,4 @@
+import { accountsServices } from "../controllers/AccountsControllers";
 import { AccountProps } from "./AccountServices";
 
 enum TRANSACTION {
@@ -22,34 +23,51 @@ export class EventsServices {
 
     Reset() {
         this.accounts = [];
+        accountsServices.accounts = [];
         console.log("Accouts now is a empty array.");
     }
 
     Deposit(id: string, amount: number) {
         const destinationAccount = this.accounts.find(account => account.id == id)
         if (!!destinationAccount) {
-            const finalValue = destinationAccount.balance += amount;
-            return { id: destinationAccount.id, balance: destinationAccount.balance };
+            destinationAccount.balance += amount;
+            let updatedDestination = { id: destinationAccount.id, balance: destinationAccount.balance };
+
+            return accountsServices.Update(updatedDestination)
+
         } else {
-            this.accounts.push({ id: id, balance: amount })
-            return { "id": id, "balance": amount }
+            let newAccount = accountsServices.Create(id, amount)
+            this.accounts.push(newAccount)
+            return newAccount
         }
     }
 
     Withdraw(id: string, amount: number) {
         const account = this.accounts.find(el => el.id == id)
+
         if (!!account) {
-            const finalValue = account.balance -= amount;
-            return { id: account.balance, balance: account.balance };
+            console.log("account", account)
+            account.balance -= amount;
+
+            let updatedOrigin = { id: account.id, balance: account.balance };
+
+            return accountsServices.Update(updatedOrigin);
+        } else {
+            return undefined;
         }
     }
 
-    Transfer(OriginAccount: AccountProps, DestinationAccount: AccountProps, amount: number) {
-        OriginAccount.balance -= amount;
-        DestinationAccount.balance += amount;
+    Transfer(OriginId: string, DestinationId: string, amount: number) {
+        const originFinalValue = this.Withdraw(OriginId, amount)
+        if (originFinalValue != undefined) {
+            const destinationFinalValue = this.Deposit(DestinationId, amount)
 
-        console.log(OriginAccount, DestinationAccount)
-
-        //todo: return a array with two objects: the OriginAccount and the DestinationAccount.
+            return {
+                origin: originFinalValue,
+                destination: destinationFinalValue
+            }
+        } else {
+            return undefined;
+        }
     }
 }

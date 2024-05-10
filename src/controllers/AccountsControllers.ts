@@ -7,8 +7,7 @@ const accountsServices = new AccountsServices()
 accountsRouter.get("/", (req: Request, res: Response) => {
     let id = req.query.account_id
 
-    console.log(accountsServices.accounts)
-
+    console.log("accountsServices", accountsServices)
     let resp = 0;
     let responseCode = 404;
 

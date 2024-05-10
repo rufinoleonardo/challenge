@@ -10,7 +10,13 @@ export interface AccountProps { "id": string, "balance": number }
 export class AccountsServices {
     public accounts: AccountProps[] = [];
 
-    getAccountById(account_id: string) {
+    Create(id: string, amount: number = 0) {
+        let newAccount = { id: id, balance: amount }
+        this.accounts.push(newAccount)
+        return newAccount
+    }
+
+    ReadAccountById(account_id: string) {
         let result = this.accounts.filter(el => el.id == account_id)
         if (!!result.length) {
             return { success: true, balance: result[0].balance }
@@ -19,11 +25,10 @@ export class AccountsServices {
         }
     }
 
-    create(account_id: string, amount: number = 0) {
-        this.accounts.push({ id: account_id, balance: amount })
-    }
+    Update(account: AccountProps) {
+        let updating = this.accounts.find(el => el.id == account.id)
+        updating = account;
 
-    update(update: AccountProps) {
-        // todo : to see the EventsServices comments
+        return account;
     }
 }
