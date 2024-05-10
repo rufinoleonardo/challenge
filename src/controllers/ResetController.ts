@@ -1,5 +1,4 @@
 import { Router, Request, Response } from "express";
-import { accountsServices } from "./AccountsControllers";
 import { eventsServices } from "./EventsController";
 
 const resetRouter = Router();
